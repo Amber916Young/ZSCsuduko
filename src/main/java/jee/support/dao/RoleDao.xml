@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.RoleDao">
+
+    <update id="updataRole">
+        update role  set
+        name=#{name}
+        where id = #{id}
+    </update>
+
+    <!--<select id="findnameByid" parameterType="java.util.Map" resultType="java.lang.String">-->
+        <!--select name from role-->
+        <!--where id in-->
+            <!--<foreach item="roleids"  index="index" collection="roleids" open="(" separator="," close=")">-->
+                <!--#{roleids}-->
+            <!--</foreach>-->
+    <!--</select>-->
+    <select id="findnameByid" resultType="int">
+        select roleid from role_user
+        where realname=#{username}
+    </select>
+
+
+
+    <insert id="insertRole">
+        insert into role (name) value (#{name});
+    </insert>
+    
+    <insert id="insertRolePermission">
+        insert into role_permission(roleid,permissionid) values
+        <foreach collection="permissionids " item="permissionid" separator=",">
+            (#{roleid},#{permissionid})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRolePermissions">
+        delete from role_permission where roleid = #{roleid}
+    </delete>
+
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryData" resultType="jee.support.entity.Role">
+        select * from role limit #{start},#{size};
+    </select>
+    <select id="pageQueryCount" resultType="int">
+        select count(*) from role
+    </select>
+</mapper>

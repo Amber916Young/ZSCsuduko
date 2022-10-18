@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.Head_portraitDao">
+
+    <delete id="deleteHead_portrait">
+        delete from head_portrait where realname = #{realname}
+    </delete>
+    <insert id="addHead_portrait">
+        insert into head_portrait(filename ,mimeType,fileUrl,realname)
+        value(#{fileName},#{mimeType},#{fileUrl},#{realname})
+    </insert>
+
+
+
+
+</mapper>
+        <!--update head_portrait set head_portraitId=#{head_portraitId}-->
+        <!--,filename=#{filename},mimeType=#{mimeType} ,fileUrl=#{fileUrl},-->
+        <!--=  where ;-->

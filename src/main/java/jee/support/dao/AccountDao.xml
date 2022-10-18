@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.AccountDao">
+
+
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryData" resultType="jee.support.entity.Account">
+        select * from account
+        <where>
+            <if test="queryText != null">
+                and gid=#{queryText}
+            </if>
+        </where>
+        limit #{start},#{size};
+    </select>
+    <select id="pageQueryCount" resultType="int">
+        select count(*) from account
+        <where>
+            <if test="queryText != null">
+                and gid=#{queryText}
+            </if>
+        </where>
+    </select>
+
+
+    <!--总金额-->
+    <insert id="addmoeny">
+        insert into money (id,account_money) value (#{id} ,#{account_money})
+    </insert>
+
+    <!--UPDATE Person SET FirstName = 'Fred' WHERE LastName = 'Wilson'-->
+    <update id="updatemoney">
+        update money set account_money = #{account_money} where id = #{id}
+    </update>
+
+    <!--获取id 也就是届数相同的-->
+    <select id="Getaccounts" resultType="jee.support.entity.Account">
+        select * from account where gid=#{id}
+    </select>
+
+    <select id="Getaccounts_expenditureBygid" resultType="jee.support.entity.Account">
+          select expenditure from account where gid=#{gid}
+    </select>
+
+
+    <update id="setAccountmoeny">
+          update  account set balance = #{nowBalance} where id=#{id}
+    </update>
+
+    <!--新增账单-->
+    <insert id="insertAccount">
+        insert into account (id,gid,name,detail,expenditure,time,balance,pname)
+        value (#{id},#{gid},#{name},#{detail},#{expenditure},#{time},#{balance},#{pname})
+    </insert>
+
+
+
+    <!--批量删除-->
+    <delete id="deleteAccountsByid">
+            delete from account where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateAccount">
+             update  account set gid=#{gid},name=#{name},detail=#{detail},expenditure=#{expenditure},time=#{time},balance=#{balance},pname=#{pname} where id=#{id}
+    </update>
+
+</mapper>
+

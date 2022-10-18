@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.PermissionDao">
+    <insert id="insertPermission">
+        insert  into permission(
+        name ,url,pid
+        )value (
+        #{name},#{url},#{pid}
+        )
+    </insert>
+
+    <update id="updatePermission">
+        update permission
+        set
+        name=#{name},url=#{url}
+        where id = #{id}
+    </update>
+
+
+    <select id="queryPermissionsByUser"  resultType="jee.support.entity.Permission">
+        select * from permission where id in(
+          select permissionid from role_permission where roleid in(
+            select roleid from role_user where  realname=#{realname}
+          )
+        )
+    </select>
+
+
+</mapper>
+

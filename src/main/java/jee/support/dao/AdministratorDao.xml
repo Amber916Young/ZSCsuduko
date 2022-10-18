@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.AdministratorDao">
+
+    <insert id="insertAdmin">
+          insert into administrator(
+        realname,gender,department,sno,major,id,grade,sid,position
+        )value (
+        #{realname},#{gender},#{department},#{sno},#{major},#{id},#{grade},#{sid},#{position}
+        )
+    </insert>
+
+    <update id="updateAdmin">
+         update administrator
+        set
+        gender=#{gender},department=#{department},sno=#{sno},major=#{major},id=#{id},grade=#{grade},sid=#{sid},position=#{position}
+        where realname = #{realname}
+    </update>
+    <!--批量删除-->
+    <delete id="deleteUsers" parameterType="String">
+        delete from administrator where realname in
+        <foreach collection="realnames" item="realname" open="(" close=")" separator=",">
+            #{realname}
+        </foreach>
+    </delete>
+
+</mapper>
+

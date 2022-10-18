@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.CUserDao">
+    <insert id="insertUser">
+        insert into user(
+        realname,username,email,password,gender,tel,department,sno,major,level,integral,createtime,id,grade
+        )value (
+        #{realname},#{username},#{email},#{password},#{gender},#{tel},#{department},#{sno},#{major},#{level},#{integral},#{createtime}
+        ,#{id},#{grade}
+        )
+    </insert>
+
+    <!--更新用户信息 用户名不可以更改！！！-->
+    <update id="updateUser" >
+        update user
+        set
+        username=#{username},
+        email=#{email},password=#{password},gender=#{gender},tel=#{tel},department=#{department},sno=#{sno},
+        major=#{major},level=#{level},integral=#{integral},createtime=#{createtime},
+        id=#{id},grade=#{grade}
+        where realname = #{realname}
+    </update>
+
+    <!-- 删除用户信息 -->
+    <delete id="deleteUser" parameterType="String">
+        delete from User where realname=#{realname}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteUsers" parameterType="String">
+        delete from User where realname in
+        <foreach collection="realnames" item="realname" open="(" close=")" separator=",">
+            #{realname}
+        </foreach>
+    </delete>
+
+
+    <!--queryByUsername-->
+    <select id="queryByUsername" resultType="jee.support.entity.CUSER">
+        select * from user  where realname=#{realname}
+    </select>
+    <!--queryByCUsername-->
+    <select id="queryByCUsername" resultType="jee.support.entity.CUSER">
+        select * from user  where username = #{username}
+    </select>
+
+
+    <!--insertUserRoles-->
+    <insert id="insertUserRoles">
+        insert into role_user (realname,roleid) values
+        <foreach collection="roleids" item="roleid" separator=",">
+            (#{realname},#{roleid})
+        </foreach>
+    </insert>
+
+    <!--deleteUserRoles-->
+    <delete id="deleteUserRoles">
+        delete from role_user where realname = #{realname} and roleid in
+        <foreach collection="roleids" item="roleid" open="(" close=")" separator=",">
+            #{roleid}
+        </foreach>
+    </delete>
+
+
+
+    <!--根据用户名和密码查找用户  登陆-->
+    <select id="findByNameAndPwd" resultType="jee.support.entity.CUSER">
+        select * from user as u where (u.username=#{username} or u.realname = #{username}) and u.Password=#{password}
+    </select>
+
+    <!--ajax 查找是否存在用户名-->
+    <select id="findByUsername" parameterType="String" resultType="jee.support.entity.CUSER">
+        select * from User as u where u.Username=#{username};
+    </select>
+
+    <select id="findByRealname" parameterType="String" resultType="jee.support.entity.CUSER">
+        select * from User as u where u.realname=#{realname};
+    </select>
+    <select id="findByUsernameOrRealname" parameterType="String" resultType="jee.support.entity.CUSER">
+        select * from User as u where u.realname=#{realname} and u.Username=#{username};
+    </select>
+
+
+
+    <!--主页面回显积分表信息-->
+    <select id="find_usernameByintegral"  resultType="jee.support.entity.CUSER">
+        select  username , integral ,id,userUrl from user order by integral desc limit 18
+    </select>
+
+    <!--写给小程序的-->
+    <select id="find_usernameByintegralmini"  resultType="jee.support.entity.CUSER">
+        select  username , integral ,id,userUrl from user order by integral desc limit 10
+    </select>
+
+    <select id="integralByGid"  resultType="jee.support.entity.CUSER">
+        select   username , integral ,id,userUrl from user where id=#{gid} order by integral desc limit 15
+    </select>
+
+
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryData" resultType="jee.support.entity.CUSER">
+        select * from user
+        <where>
+            <if test="queryText != null">
+                and username like concat('%', #{queryText}, '%') or
+                realname like concat('%', #{queryText}, '%') or
+                gender like concat('%', #{queryText}, '%') or
+                tel like concat('%', #{queryText}, '%') or
+                department like concat('%', #{queryText}, '%') or
+                major like concat('%', #{queryText}, '%') or
+                sno like concat('%', #{queryText}, '%') or
+                id like concat('%', #{queryText}, '%') or
+                grade like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+        limit #{start},#{size};
+    </select>
+    <select id="pageQueryCount" resultType="int">
+        select count(*) from user
+        <where>
+            <if test="queryText != null">
+                and username like concat('%', #{queryText}, '%') or
+                realname like concat('%', #{queryText}, '%') or
+                gender like concat('%', #{queryText}, '%') or
+                tel like concat('%', #{queryText}, '%') or
+                department like concat('%', #{queryText}, '%') or
+                major like concat('%', #{queryText}, '%') or
+                sno like concat('%', #{queryText}, '%') or
+                id like concat('%', #{queryText}, '%') or
+                grade like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+
+    <!--主页面的会员列表 按照届来查询  分页查询  异步 -->
+    <select id="pageQueryDatatBysid" resultType="jee.support.entity.CUSER">
+        select * from user where id =#{id}  limit #{start},#{size};
+    </select>
+    <select id="pageQueryCountBysid" resultType="int">
+        select count(*) from user where id=#{id}
+    </select>
+
+    <!--更新积分信息-->
+    <update id="updateUserIntegralByusername" >
+        update user set integral=#{sumIntegral} where username = #{username}
+    </update>
+
+
+</mapper>
+

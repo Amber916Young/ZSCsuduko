@@ -1,0 +1,135 @@
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; } 
+body, button, input, select, textarea { font:12px/1.5tahoma, arial, \5b8b\4f53; } 
+h1, h2, h3, h4, h5, h6{ font-size:100%; } 
+address, cite, dfn, em, var { font-style:normal; } 
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; } 
+small{ font-size:12px; } 
+ul, ol { list-style:none; } 
+a { text-decoration:none; } 
+a:hover { text-decoration:underline; } 
+sup { vertical-align:text-top; } 
+sub{ vertical-align:text-bottom; } 
+legend { color:#000; } 
+fieldset, img { border:0; } 
+button, input, select, textarea { font-size:100%; } 
+table { border-collapse:collapse; border-spacing:0; }
+
+html{
+    min-width:850px;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+}
+
+.header-logo{
+    /* width: 50%; */
+}
+
+.header-nav{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-nav li{
+    display: inline;
+    box-sizing: border-box;
+    padding: 0.5em;
+}
+
+.main{
+    display: flex;
+}
+
+.main-left{
+    flex:1;
+    margin-left: 2em;
+    background-color: white
+}
+
+.main-right{
+    flex-basis: 33.33%;
+    background-color: white;
+    margin-right: 2em;
+}
+
+.main-rightarticle{
+    width: 20em;
+    background-color: #white;
+    margin-right: 2em;
+}
+.news{
+    display: flex;
+}
+
+.news-img{
+    align-items: flex-start;
+    flex-basis: 35%;
+    margin-right: 1em;
+    margin-bottom: 3em;
+}
+
+img{
+    /*width: 100%;*/
+    height: auto; 
+    /* max-width:100%; */
+}
+
+.news-txt{
+    flex: 1;
+    height: 100%;
+}
+
+.news-txt p{
+    margin-top: 0.15em;
+    font-size: 0.75rem;
+    text-align: justify;
+    text-indent: 2em;
+    /* max-height: 112px;
+    overflow: hidden; */
+}
+.news p{
+    margin-top: 0.15em;
+    font-size: 0.75rem;
+    text-align: justify;
+    text-indent: 2em;
+}
+/*搜索框样式*/
+.d1 {
+    background: #A3D0C3;
+    width: 20em;
+    /*float:right;*/
+    margin: auto;
+    /*margin-top: 1em;*/
+    /*margin-right: 1em;*/
+}
+.d1 input {
+    width: 18em;
+    height: 2.5em;
+    padding-left: 1em;
+    border: 2px solid #7BA7AB;
+    /*border-radius: 5px;*/
+    outline: none;
+    background: #F9F0DA;
+    color: #9E9C9C;
+}
+.d1 button {
+    float: right;
+    top: 0;
+    right: 0;
+    width:2em;
+    height:2.5em;
+    border: none;
+    background: #7BA7AB;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+}
+.d1 button:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    font-size: 0.75em;
+    color: #F9F0DA;
+}

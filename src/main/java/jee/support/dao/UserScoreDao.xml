@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.UserScoreDao">
+
+   <insert id="insertSudukoScoreByUsername">
+       insert into  userscore (id,sudukoid,username,totaltime,finishSuduko,finishTime,rightorno) value (#{id},#{sudukoid},#{username},#{totaltime},#{finishSuduko},#{finishTime},#{rightorno})
+   </insert>
+
+
+    <select id="CheckfinishSudukoByUsername" resultType="String">
+        select finishSuduko from userscore where username=#{username} and sudukoid=#{sudukoid}
+    </select>
+</mapper>

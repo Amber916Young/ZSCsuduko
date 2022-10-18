@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.PublicDao">
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryData" resultType="jee.support.entity.Announcement">
+        select * from announcement
+        <where>
+            <if test="queryText != null">
+                and content like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+        limit #{start},#{size};
+    </select>
+    <select id="pageQueryCount" resultType="int">
+        select count(*) from announcement
+        <where>
+            <if test="queryText != null">
+                and content like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteAnnouncemnetByids">
+        delete from announcement where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--新增-->
+    <insert id="insertannouncement">
+        insert into announcement (id,gid,realname,content,time,status)
+        value (#{id},#{gid},#{realname},#{content},#{time},#{status})
+    </insert>
+    
+    <!--新增notice表中的公告信息-->
+    <insert id="SetNoticeByid">
+        insert into notice (id,aid,nid,status) values (#{id},#{aid},#{nid},#{status});
+    </insert>
+
+
+    <!--insertActivity 新增活动内容-->
+    <insert id="insertActivity" >
+        insert into activity (id,title,content,time,name,url,status) values (#{id},#{title},#{content},#{time},#{name},#{url},#{status});
+    </insert>
+    <!--编辑活动-->
+    <!--UPDATE Person SET FirstName = 'Fred' WHERE LastName = 'Wilson' -->
+    <update id="UpdataActivity">
+        update activity set title=#{title},content=#{content},time=#{time},name=#{name},url=#{url},status=#{status} where id=#{id}
+    </update>
+
+    <select id="pageQueryActivityData" resultType="jee.support.entity.Activity">
+        select * from activity
+        <where>
+            <if test="queryText != null">
+                and title like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+        order by time desc
+        limit #{start},#{size}
+    </select>
+    <select id="pageQueryActivityCount" resultType="int">
+        select count(*) from activity
+        <where>
+            <if test="queryText != null">
+                and title  like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="pageQueryActivityDataBystatue1" resultType="jee.support.entity.Activity">
+        select * from activity  where status =1
+        <!--<where>-->
+            <!--<if test="queryText != null">-->
+                <!--and title like concat('%', #{queryText}, '%')-->
+            <!--</if>-->
+        <!--</where>-->
+        order by time desc
+        limit #{start},#{size}
+    </select>
+    <select id="pageQueryActivityCountBystatue1" resultType="int">
+        select count(*) from activity  where status =1
+        <!--<where>-->
+            <!--<if test="queryText != null">-->
+                <!--and title  like concat('%', #{queryText}, '%')-->
+            <!--</if>-->
+        <!--</where>-->
+    </select>
+    <delete id="deleteActivityByids">
+        delete from activity where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <insert id="insertSuduko">
+        insert into suduko (id,num,type,difficulty_level,score,time,url,status) values (#{id},#{num},#{type},#{difficulty_level},#{score},#{time},#{url},#{status});
+
+    </insert>
+
+
+
+
+    <select id="pageQuerySudukoData" resultType="jee.support.entity.Suduko">
+        select * from suduko
+        <where>
+            <if test="queryText != null">
+            and type like concat('%', #{queryText}, '%')
+            </if>
+
+        </where>
+        order by time desc
+        limit #{start},#{size}
+    </select>
+    <select id="pageQuerySudukoCount" resultType="int">
+        select count(*) from suduko
+        <where>
+            <if test="queryText != null">
+                and type like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+    <!--index 页面的查找-->
+    <select id="pageQuerySudukoCountIndex" resultType="int">
+        select count(*) from suduko
+        <where>
+            status =1
+            <if test="queryText != null">
+                and type like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+    <select id="pageQuerySudukoIndexData" resultType="jee.support.entity.Suduko">
+        select * from suduko
+        <where>
+            status =1
+            <if test="queryText != null">
+                and type like concat('%', #{queryText}, '%')
+            </if>
+
+        </where>
+        order by time desc limit #{start},#{size}
+    </select>
+
+    <!--批量删除-->
+    <delete id="deleteSudukoByids">
+        delete from suduko where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteSudukoAnswerByids">
+        delete from sudukoanswer where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--批量删除  -->
+    <delete id="deleteSudukoImgByMap">
+        delete from SudukoImg where sid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteCarouselByids">
+        delete from carousel where aid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <!--上传轮播图片封面-->
+    <insert id="UpLoadPhoto">
+        insert into Carousel (id,filename,aid,url,aurl,title,time) values (#{id},#{filename},#{aid},#{url},#{aurl},#{title},#{time});
+    </insert>
+    <select id="QueryCarousel" resultType="carousel">
+         select * from Carousel where aid = #{id}
+    </select>
+
+
+    <!--//改为1-->
+    <update id="updatestatusBytypeAndoid">
+        UPDATE activity SET status = 1 where id = #{oid}
+    </update>
+    <!--//改为0-->
+    <update id="updatestatusActivityByoid">
+        UPDATE activity SET status = 0 where id = #{oid}
+    </update>
+
+    <update id="updatestatusBysudukotypeAndoid">
+        UPDATE suduko SET status = 1 where id = #{oid}
+    </update>
+
+
+    <update id="updatestatusBynoticetypeAndoid">
+        UPDATE announcement SET status = 1 where id = #{oid}
+    </update>
+
+    <update id="updatestatusByannoncementtypeAndoid">
+        UPDATE announcement SET status = 1 where id = #{oid}
+    </update>
+
+    <update id="updateNoticestatusByoid">
+        UPDATE notice SET status = 1 where aid = #{oid}
+    </update>
+
+    <update id="updatestatusArticleBytypeAndoid">
+        UPDATE article SET status = 1 where id = #{oid}
+    </update>
+
+<!--预览-->
+
+    <insert id="insertPreview">
+        insert into preview(id,aid,url,content,title) value (#{id},#{aid},#{url},#{content},#{title})
+    </insert>
+
+    <!--加入数独答案，注意拼写！！！！！！-->
+    <insert id="insertSudukoAnwser">
+        insert into sudukoAnswer (id,answer) values (#{id},#{answer});
+    </insert>
+
+
+    <!--替换！！周边部分-->
+    <insert id="insertZhoubian">
+        insert into zhoubian (id,fileName,mimeType,fileUrl,title,time) values (#{id},#{fileName},#{mimeType},#{fileUrl},#{title},#{time});
+    </insert>
+
+
+    <insert id="insertArticle">
+        insert into article(id,title,content,time,name,url,status,type,typemsg) value (#{id},#{title},#{content},#{time},#{name},#{url},#{status},#{type},#{typemsg});
+    </insert>
+
+    <select id="pageQueryArticleData" resultType="jee.support.entity.Article">
+        select * from article
+        <where>
+            <if test="queryText != null">
+                and title like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+        order by time desc
+        limit #{start},#{size}
+    </select>
+
+    <select id="pageQueryArticleCount" resultType="int">
+        select count(*) from article
+        <where>
+            <if test="queryText != null">
+                and title  like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteArticleByids">
+        delete from article where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--编辑活动-->
+    <!--UPDATE Person SET FirstName = 'Fred' WHERE LastName = 'Wilson' -->
+    <update id="UpdataArticle">
+        update article set title=#{title},content=#{content},time=#{time},name=#{name},url=#{url},status=#{status} where id=#{id}
+    </update>
+
+    <insert id="insertPreviewArticle">
+        insert into previewarticle(id,aid,url,content,title) value (#{id},#{aid},#{url},#{content},#{title})
+    </insert>
+
+    <select id="pageQueryArticleDataBytype" resultType="jee.support.entity.Article">
+        select * from article where type like concat('%', #{type}, '%')
+        order by time desc
+    </select>
+
+    <select id="pageQueryArticleCountBytype" resultType="int">
+        select count(*) from article
+        <where>
+            and type like concat('%', #{type}, '%')
+        </where>
+    </select>
+    <select id="getArticleByStandard" resultType="jee.support.entity.Timing">
+        select * from timing where type='article' and oid in (select id from article where type like concat('%', #{type}, '%')) order by time desc
+
+    </select>
+
+    <!--上传数独的题目 图片类型，变形数独-->
+    <insert id="insertSudukoImg">
+        insert into sudukoimg (id,sid,fileName,mimeType,fileUrl,type) values (#{id},#{sid},#{fileName},#{mimeType},#{fileUrl},#{type});
+    </insert>
+</mapper>

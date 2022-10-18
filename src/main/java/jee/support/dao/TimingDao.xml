@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.TimingDao">
+
+    <insert id="inserttiming" >
+        insert into  timing (id,oid,status,time,optime,type) values (#{id},#{oid},#{status},#{time},#{optime},#{type});
+    </insert>
+
+    <!--UPDATE Person SET FirstName = 'Fred' WHERE LastName = 'Wilson' <![CDATA[ <= ]]>-->
+    <update id="updatestatus">
+        update timing set status = 1 where str_to_date(time,'%Y-%m-%d %H:%i') <![CDATA[ <= ]]> str_to_date(#{time},'%Y-%m-%d %H:%i')
+    </update>
+
+
+
+
+    <!--批量删除-->
+    <delete id="deleteBeforeByMap">
+        delete from timing where type=#{type} and oid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>
+

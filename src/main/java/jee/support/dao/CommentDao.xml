@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.CommentDao">
+
+
+    <!--插入文章的评论 根据文章id回显-->
+    <insert id="InsertActivityAddcoment">
+        insert into comment (id,aid,username,realname,content,time,aurl,atitle) values (#{id},#{aid},#{username},#{realname},#{content},#{time},#{aurl},#{atitle});
+    </insert>
+
+    <!--pageQueryActivityCommentData-->
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryActivityCommentData" resultType="jee.support.entity.Comment">
+        select * from comment where aid =#{aid} order by time desc limit #{start},#{size};
+    </select>
+    <select id="pageQueryActivityCommentCount" resultType="int">
+        select count(*) from comment where aid =#{aid}
+    </select>
+
+    <delete id="DeleteActivityCommentByaids">
+        delete from comment where aid in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

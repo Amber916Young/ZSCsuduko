@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.AllUserDao">
+    <!--home文件夹下的操作-->
+    <update id="updateByUsername">
+        update  user set
+        username=#{username},
+        email=#{email} ,tel=#{tel},gender=#{gender},department=#{department},sno=#{sno},major=#{major},sign=#{sign}
+        ,userUrl=#{userUrl}
+         where realname=#{realname}
+    </update>
+    <select id="checkusername" resultType="String">
+        select * from user where username =#{username} and realname &lt;&gt; #{realname}
+    </select>
+    <update id="updatePwdByrealname">
+        update  user set
+        password=#{password}
+         where realname=#{realname}
+    </update>
+
+
+</mapper>
+

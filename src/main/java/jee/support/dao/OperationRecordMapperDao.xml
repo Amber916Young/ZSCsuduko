@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace表示命名空间 -->
+<mapper namespace="jee.support.dao.OperationRecordMapperDao">
+
+    <insert id="insertSelective">
+        insert into  OperationRecord(OperateObject,Operate,UserRealname,OperateTime,OperateState,OperateObjectKey)
+         value (#{OperateObject},#{Operate},#{UserRealname},#{OperateTime},#{OperateState}, #{OperateObjectKey})
+    </insert>
+
+    <!--查询所有的用户  分页查询-->
+    <select id="pageQueryLogData" resultType="jee.support.entity.OperationRecord">
+        select * from operationrecord
+        <where>
+            <if test="queryText != null">
+                and Operate like concat('%', #{queryText}, '%')
+                and UserRealname like concat('%', #{queryText}, '%')
+            </if>
+        </where> order by OperateTime desc
+        limit #{start},#{size};
+    </select>
+    <select id="pageQueryLogCount" resultType="int">
+        select count(*) from operationrecord
+        <where>
+            <if test="queryText != null">
+                and Operate like concat('%', #{queryText}, '%')
+                and UserRealname like concat('%', #{queryText}, '%')
+            </if>
+        </where>
+    </select>
+
+
+</mapper>
+
